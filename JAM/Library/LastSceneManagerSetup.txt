@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Josh/Main 2.unity
+- path: Assets/McClay/Main 4.unity
   isLoaded: 1
   isActive: 1
