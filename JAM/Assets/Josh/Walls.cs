@@ -40,7 +40,4 @@ public class Walls : MonoBehaviour {
 
 <<<<<<< HEAD
     static void Draw()*/
-=======
-    static void Draw() { }//temp fix
->>>>>>> origin/FuckupBranch
 }
