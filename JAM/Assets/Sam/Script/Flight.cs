@@ -41,6 +41,7 @@ public class Flight : MonoBehaviour {
     // Use this for initialization
     void Awake() {
         rig = GetComponent<Rigidbody2D>();
+        
 	}
 
     // Update is called once per frame

@@ -51,18 +51,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Hybrid.cs" />
      <Compile Include="Assets\Josh\EchoLocation.cs" />
      <Compile Include="Assets\Josh\Fade.cs" />
      <Compile Include="Assets\Josh\WallHiding.cs" />
      <Compile Include="Assets\Josh\Walls.cs" />
      <Compile Include="Assets\McClay\Scripts\Flap.cs" />
-     <Compile Include="Assets\PowerupFly.cs" />
+     <Compile Include="Assets\PuzzleBox.cs" />
+     <Compile Include="Assets\Sam\Door.cs" />
+     <Compile Include="Assets\Sam\Hybrid.cs" />
+     <Compile Include="Assets\Sam\Key.cs" />
      <Compile Include="Assets\Sam\MovingPlatform.cs" />
+     <Compile Include="Assets\Sam\PowerupFly.cs" />
+     <Compile Include="Assets\Sam\PuzzleBox.cs" />
+     <Compile Include="Assets\Sam\PuzzleBoxCollider.cs" />
      <Compile Include="Assets\Sam\Script\Bat.cs" />
      <Compile Include="Assets\Sam\Script\CameraController.cs" />
      <Compile Include="Assets\Sam\Script\Ceiling.cs" />
      <Compile Include="Assets\Sam\Script\Flight.cs" />
+     <Compile Include="Assets\Sam\Script\Rainbow.cs" />
      <Compile Include="Assets\Sam\Script\Wall.cs" />
      <None Include="Assets\McClay\Decoy.txt" />
  <Reference Include="UnityEngine.UI">
