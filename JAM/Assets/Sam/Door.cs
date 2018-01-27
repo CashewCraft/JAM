@@ -5,19 +5,19 @@ using UnityEngine;
 public class Door : MonoBehaviour {
 
 
-    //GameController gameController;
+    GameController gameController;
   
 
 
     void Awake()
     {
-        //gameController = FindObjectOfType<GameController>();
+        gameController = FindObjectOfType<GameController>();
     }
 
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        /*if (col.gameObject.GetComponent<Flight>() != null)
+        if (col.gameObject.GetComponent<Flight>() != null)
         {
             if (gameController.key > 0)
             {
@@ -25,7 +25,7 @@ public class Door : MonoBehaviour {
                 Destroy(gameObject);
             }
 
-        }*/
+        }
     }
 
 

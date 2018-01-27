@@ -17,6 +17,8 @@ public class Flight : MonoBehaviour {
     float fixedX = -999f;
     bool isRightWall = true;
 
+    public GameController gameController;
+
 
     float fixedY = -999f;
     bool isFloor = true;
@@ -41,6 +43,7 @@ public class Flight : MonoBehaviour {
     // Use this for initialization
     void Awake() {
         rig = GetComponent<Rigidbody2D>();
+        gameController = FindObjectOfType<GameController>();
         
 	}
 
@@ -241,11 +244,45 @@ public class Flight : MonoBehaviour {
 
         lastStick = curStick;
 
-            
-	}
+           if (rig.rotation == 0)
+        {
+            if (Input.GetAxis("MoveX") < 0)
+
+            {
+                GetComponent<SpriteRenderer>().flipX = true;
+            } else
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+            }
+        }
+
+        if (rig.rotation == 180)
+        {
+            if (Input.GetAxis("MoveX") < 0)
+
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else
+            {
+                GetComponent<SpriteRenderer>().flipX = true;
+            }
+        }
+        if (Input.GetButtonDown("Fire3"))
+        {
+            gameController.Die(gameObject);
+            fixedY = -999f;
+            fixedX = -999f;
+            curStick = LastStick.None;
+            isDropping = false;
+            curDropTime = 0f;
+        }
+    }
 
     void OnCollisionEnter2D(Collision2D col)
     {
+
+        CheckHurty(col);
         CheckWall(col);
         CheckCeiling(col);
         if (Mathf.Abs(Input.GetAxis("MoveY")) > 0 && fixedX != -999f)
@@ -259,6 +296,19 @@ public class Flight : MonoBehaviour {
 
     }
 
+    void CheckHurty(Collision2D col)
+    {
+        if (col.gameObject.GetComponent<Hurty>() != null)
+        {
+            gameController.Die(gameObject);
+
+            fixedY = -999f;
+            fixedX = -999f;
+            curStick = LastStick.None;
+            isDropping = false;
+            curDropTime = 0f;
+        }
+    }
     void CheckWall(Collision2D col)
     {
         if (col.gameObject.GetComponent<Wall>() != null)

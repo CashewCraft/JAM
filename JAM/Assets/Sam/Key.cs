@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Key : MonoBehaviour {
 
-    //GameController gameController;
+    GameController gameController;
  
 
 	
 	void Awake () {
-        //gameController = FindObjectOfType<GameController>();
+        gameController = FindObjectOfType<GameController>();
 	}
 
 
@@ -17,7 +17,7 @@ public class Key : MonoBehaviour {
     {
         if (col.gameObject.GetComponent<Flight>() != null)
         {
-            //gameController.key++;
+            gameController.key++;
             Destroy(gameObject);
 
         }

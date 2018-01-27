@@ -17,6 +17,7 @@ public class MovingPlatform : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        Debug.Log(totPoints + " ---- " + curPoint);
         switch (moveType)
         {
             case (MoveType.abcabc):
@@ -31,20 +32,28 @@ public class MovingPlatform : MonoBehaviour {
 
             case (MoveType.abcba):
                 transform.position = Vector2.Lerp(transform.position, waypoints[curPoint].position, Time.fixedDeltaTime);
-                if (transform.position == waypoints[curPoint].position)
+                if (Vector2.Distance(transform.position, waypoints[curPoint].position) < 0.1f)
                 {
-                    if (direction)
+                  if (direction)
                     {
                         curPoint++;
-                        if (curPoint > totPoints)
-                            curPoint = 0;
+                        if (curPoint >= totPoints)
+                        {
+                            direction = !direction;
+                            curPoint = totPoints;
+                        }
                     } else
                     {
                         curPoint--;
-                        if (curPoint < 0)
-                            curPoint = totPoints;
+                        if (curPoint <= 0)
+                        {
+                            direction = !direction;
+                            curPoint = 0;
+                        }
 
                     }
+
+                  
                 }
                 break;
             case (MoveType.random):
