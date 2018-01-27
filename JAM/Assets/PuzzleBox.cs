@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class PuzzleBox : MonoBehaviour {
 
     public Transform topLeft;
@@ -118,3 +118,4 @@ public class PuzzleBox : MonoBehaviour {
         }
     }
 }
+*/

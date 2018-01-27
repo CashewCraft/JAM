@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Sam/FlightTest.unity
+- path: Assets/Main/Prototype.unity
   isLoaded: 1
   isActive: 1
