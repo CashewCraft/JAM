@@ -9,7 +9,7 @@ public class EchoLocation : MonoBehaviour {
 
     public GameObject Blep;
 
-    public float maxRange = 10; //The maximum range of the raycast 
+    private float maxRange = 10; //The maximum range of the raycast 
 
     private float Timer;
     public float TimeLimiter = 2;
@@ -21,7 +21,20 @@ public class EchoLocation : MonoBehaviour {
     public GameObject item;
 
     private float Rotlock;
-    private Vector2 PingPoint;
+    private Vector2 HoldPos;
+
+    private GameObject[] Blips;
+    char[] HitList;
+
+
+    void Start()
+    {
+        Blips = new GameObject[(int)(sprayArc / resolution) + 1];
+        for (int i = 0; i < (int)(sprayArc / resolution) + 1; i++)
+        {
+            Blips[i] = Instantiate(Blep);
+        }
+    }
 
 	public float getThumbAng()
     {
@@ -42,17 +55,25 @@ public class EchoLocation : MonoBehaviour {
 
         if (Pulsing)
         {
-            for (float i = 0; i < sprayArc; i += resolution)
+            int index = 0;
+            for (float i = -(sprayArc/2); i < sprayArc/2; i += resolution)
             {
-                Vector2 ToPos = new Vector2(Mathf.Cos(((-(sprayArc / 2)) + i) + Rotlock) * Pulse + PingPoint.x, Mathf.Sin(((-(sprayArc / 2)) + i) + Rotlock) * Pulse + PingPoint.y);
-                Debug.DrawRay(PingPoint, ToPos);
-                RaycastHit2D hit = Physics2D.Raycast(PingPoint, ToPos, Pulse);
-
+                Vector2 ToPos = new Vector2(Pulse*Mathf.Cos(i+Rotlock),Pulse*Mathf.Sin(i + Rotlock));
+                Debug.DrawRay(HoldPos, ToPos);
+                RaycastHit2D hit = Physics2D.Raycast(HoldPos, ToPos, Pulse);
+                
                 if (hit.collider)
                 {
-                    Instantiate(Blep, hit.point, new Quaternion(), null);
+                    if (HitList[index] == '0')
+                    {
+                        Blips[index].transform.position = hit.point;
+                        Blips[index].GetComponent<Fade>().Reset();
+                        HitList[index] = '1';
+                    }
                 }
+                index++;
             }
+
             item.transform.localScale = new Vector3(Pulse*2, Pulse*2, 0);
             item.transform.rotation = Quaternion.Euler(0, 0, (Mathf.Rad2Deg * Rotlock)-45);
             Pulse += PulseSpeed;
@@ -63,12 +84,14 @@ public class EchoLocation : MonoBehaviour {
         {
             Pulsing = true;
             Timer = TimeLimiter;
-            PingPoint = transform.position;
             Rotlock = getThumbAng();
+            HoldPos = transform.position;
+            item.transform.position = transform.position;
+            HitList = new string('0', (int)(sprayArc / resolution)+1).ToCharArray();
         }
         else if (!Pulsing)
         {
             Timer -= Time.deltaTime;
         }
-	}
+    }
 }
