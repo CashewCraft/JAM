@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Ceiling : MonoBehaviour {
 
+    Collider2D c;
 	// Use this for initialization
 	void Start () {
 		
@@ -13,4 +14,18 @@ public class Ceiling : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    void OnCollisionEnter2D (Collision2D col)
+    {
+        if (col.transform.GetComponent<Flight>() != null)
+        {
+            c = transform.parent.gameObject.GetComponentInChildren<Wall>().gameObject.GetComponent<Collider2D>();
+            c.enabled = false;
+        }
+    }
+
+    void OnCollisionExit2D()
+    {
+        c.enabled = true;
+    }
 }

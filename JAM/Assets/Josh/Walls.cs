@@ -30,13 +30,13 @@ public class Walls : MonoBehaviour {
                 return i;
             }
         }
-        return null;
+        return 0;//Changed null >>> 0
     }
 
-    static void ccw(Vector2 A, Vector2 B, Vector2 C)
+    static bool ccw(Vector2 A, Vector2 B, Vector2 C) // Changed void >>>> bool
     {
         return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x);
     }
 
-    static void Draw()
+    static void Draw() { }//temp fix
 }

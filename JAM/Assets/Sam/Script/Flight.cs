@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Flight : MonoBehaviour {
+    public bool canFly = true;
+
     [SerializeField]
     float horizontalSpeed = 10f;
     [SerializeField]
@@ -20,7 +22,12 @@ public class Flight : MonoBehaviour {
     bool isFloor = true;
 
     public enum LastStick { None, Ceiling, Wall}
-    public LastStick lastStick = LastStick.None;
+    LastStick curStick = LastStick.None;
+    LastStick lastStick = LastStick.None;
+
+    float stickTime = 0.25f;
+    float curStickTime = 0f;
+
 
     float dropTime = 0.3f;
     float curDropTime = 0f;
@@ -40,106 +47,56 @@ public class Flight : MonoBehaviour {
     void FixedUpdate() {
         curCheckTime += Time.fixedDeltaTime;
         curVertDelay += Time.fixedDeltaTime;
+        curStickTime += Time.fixedDeltaTime;
 
 
         if (isDropping)
         {
             curDropTime += Time.deltaTime;
-            /*bool isValid = true;
-           /* RaycastHit2D ceilingCheck = Physics2D.Raycast(gameObject.transform.position, Vector2.up);
-            if (Mathf.Abs(ceilingCheck.distance) < 0.5f && ceilingCheck.transform.GetComponent<Ceiling>() != null)
-            {
-                RaycastHit2D wallCheckRight = Physics2D.Raycast(gameObject.transform.position, Vector2.right);
-                RaycastHit2D wallCheckLeft = Physics2D.Raycast(gameObject.transform.position, Vector2.left);
-                if ((Mathf.Abs(wallCheckLeft.distance) < 0.5f && wallCheckLeft.transform.GetComponent<Wall>() != null) && (Mathf.Abs(wallCheckRight.distance) < 0.5f && wallCheckRight.transform.GetComponent<Wall>() != null))*/
-
-
-
-
-
-
-
-
-
-            /* RaycastHit2D ceilingCheck = Physics2D.Raycast(transform.position, Vector2.up);
-             if (ceilingCheck.collider != null)
-             {
-                 if(Mathf.Abs(ceilingCheck.point.y - transform.position.y) < 0.5f || ceilingCheck.transform.GetComponent<Ceiling>() != null)
-                 {
-                     RaycastHit2D leftCheck = Physics2D.Raycast(transform.position, Vector2.left);
-                     RaycastHit2D rightCheck = Physics2D.Raycast(transform.position, Vector2.right);
-                     if ((Mathf.Abs(leftCheck.point.x - transform.position.x) < 0.5f || leftCheck.transform.GetComponent<Wall>() != null) || (Mathf.Abs(rightCheck.point.x - transform.position.x) < 0.5f || rightCheck.transform.GetComponent<Wall>() != null))
-                     {
-                         if (curDropTime >= dropTime && false)
-                         {
-                             fixedX = -999f;
-                             fixedY = -999f;
-                             isDropping = false;
-                             rig.rotation = 0f;
-                         }
-
-                     }
-                 } 
-             } */
-
-
-
-            /* RaycastHit2D ceilingCheck = Physics2D.Raycast(transform.position, Vector2.up);
-             RaycastHit2D leftCheck = Physics2D.Raycast(transform.position, Vector2.left);
-             RaycastHit2D rightCheck = Physics2D.Raycast(transform.position, Vector2.right);
-             if (ceilingCheck.collider != null && ceilingCheck.distance < 2f)
-             {
-                 if (leftCheck.collider != null && leftCheck.distance < 2f)
-                 {
-
-                     if (rightCheck.collider != null && rightCheck.distance <2f) 
-                     {
-                         if (curDropTime >= dropTime)
-                         {
-                             fixedX = -999f;
-                             fixedY = -999f;
-                             isDropping = false;
-                             rig.rotation = 0f;
-                         }
-                     }
-                 }
-             }
-         }*/
-
-            RaycastHit2D up = Physics2D.Raycast(transform.position + Vector3.up * 0.51f, Vector2.up);
-            RaycastHit2D left = Physics2D.Raycast(transform.position + Vector3.left * 0.51f, Vector2.left);
-            RaycastHit2D right = Physics2D.Raycast(transform.position + Vector3.right * 0.51f, Vector2.right);
-            //Debug.Log(up.distance + " " + left.distance + " " + right.distance);
+        
+            RaycastHit2D up = Physics2D.Raycast(transform.position + Vector3.up * 0.5001f, Vector2.up);
+            RaycastHit2D left = Physics2D.Raycast(transform.position + Vector3.left * 0.5001f, Vector2.left);
+            RaycastHit2D right = Physics2D.Raycast(transform.position + Vector3.right * 0.5001f, Vector2.right);
+            
             if (up.distance > 0.1f && left.distance > 0.1f && right.distance > 0.1f)
             {
-                
-                    fixedX = -999f;
-                    fixedY = -999f;
-                    isDropping = false;
-                    rig.rotation = 0f;
-                
+
+                fixedX = -999f;
+                fixedY = -999f;
+                isDropping = false;
+                rig.rotation = 0f;
+
             }
         }
 
-        RaycastHit2D left1 = Physics2D.Raycast(transform.position + Vector3.left * 0.51f, Vector2.left);
-        RaycastHit2D right1 = Physics2D.Raycast(transform.position + Vector3.right * 0.51f, Vector2.right);
-
+        RaycastHit2D left1 = Physics2D.Raycast(transform.position + Vector3.left * 0.5001f, Vector2.left);
+        RaycastHit2D right1 = Physics2D.Raycast(transform.position + Vector3.right * 0.5001f, Vector2.right);
+        RaycastHit2D down = Physics2D.Raycast(transform.position + Vector3.up * -0.5001f, -Vector2.up);
+        RaycastHit2D up1 = Physics2D.Raycast(transform.position + Vector3.up * 0.5001f, Vector2.up);
         if (left1.distance < 0.01f)
         {
             rig.rotation = 270f;
         }
         else { if (right1.distance < 0.01f)
-            rig.rotation = 90f;
+            {
+                rig.rotation = 90f;
+            }
+         else if (up1.distance < 0.0001f)
+            {
+                rig.rotation = 180f;
+            }
         }
+    
 
 
-        if (Input.GetButton("Fire2") )//|| Input.GetAxisRaw("Jump") > 0.8f)
+        if (Mathf.Abs(Input.GetAxis("Jump")) > 0.95f  && curStickTime >= stickTime && canFly)//|| Input.GetAxisRaw("Jump") > 0.8f)
         {
+            curStickTime = 0f;
             if (fixedX != -999f)
             {
 
                 fixedX = -999f;
-
+                curStick = LastStick.None;
                 if (isRightWall)
                 {
                     rig.AddForce(Vector2.right * horizontalSpeed * 100f);
@@ -152,14 +109,33 @@ public class Flight : MonoBehaviour {
 
             if(fixedY != -999f)
             {
-
-               fixedY = -999f;                
-               rig.AddForce(Vector2.down * horizontalSpeed * 15f);
+                curStick = LastStick.None;
+                if (isFloor)
+                {
+                    rig.AddForce(Vector2.down * horizontalSpeed * 500f);
+                } else
+                {
+                    rig.AddForce(Vector2.up * horizontalSpeed * 15f);
+                }
+                fixedY = -999f;                
+              
                 
                  
             }
             rig.rotation = 0f;
         }
+
+        if (Mathf.Abs(Input.GetAxis("Jump")) > 0.85f && (down.distance < 0.01f) && canFly){
+            if (fixedY != -999f)
+            {
+                curStick = LastStick.None;
+                    rig.AddForce(Vector2.up * horizontalSpeed * 15f, ForceMode2D.Impulse);
+                    fixedY = -999f;
+                    curStickTime = 0f;
+                }
+
+            }
+        
 
         if (fixedX != -999f || fixedY != -999f)
         {
@@ -176,27 +152,53 @@ public class Flight : MonoBehaviour {
                 transform.position = new Vector2(fixedX, transform.position.y);
                 rig.velocity = new Vector2(0, rig.velocity.y);
                 rig.gravityScale = 0;
-                //Debug.Log(fixedX);
+               
                 curDropTime = 0;
                 
 
 
             } else
             {
+                
+                if ((down.distance > 0f))
+                {
+
+                    transform.position = new Vector2(transform.position.x, fixedY);
+                    rig.velocity = new Vector2(rig.velocity.x, 0);
+                    rig.gravityScale = 0;
+                    
+                    curDropTime = 0;
+                }
+                else if (Input.GetAxisRaw("Jump") > 0.05f && canFly)// && curVertDelay >= vertDelay)
+                {
+
+                    fixedX = -999f;
+                    fixedY = -999f;
+                    isDropping = false;
+                    rig.rotation = 0f;
+
+                    // rig.isKinematic = false;
+                    rig.gravityScale = 1f;
+                    curVertDelay = 0f;
+
+                   // float impulse = rig.velocity.y <= 0 ? (vertImpulse + (Mathf.Abs(rig.velocity.y) * 0.8f)) : vertImpulse;
+                    rig.AddForce(Vector2.up * vertImpulse * 5, ForceMode2D.Impulse);
+                    curStick = LastStick.None;
+                }
+                else
+                {
+                    transform.position = new Vector2(transform.position.x, fixedY);
+                    rig.velocity = new Vector2(rig.velocity.x, 0);
+                    rig.gravityScale = 0;
+                    
+                    curDropTime = 0;
+                }
+
                 if (Mathf.Abs(Input.GetAxis("MoveX")) > 0)
                 {
                     rig.AddForce(Vector2.right * ((Input.GetAxis("MoveX") * 1 * horizontalSpeed) - (rig.velocity.x * 0.2f)), ForceMode2D.Impulse);
-                
+
                 }
-
-                rig.rotation = 180f;
-
-                transform.position = new Vector2(transform.position.x, fixedY);
-                rig.velocity = new Vector2(rig.velocity.x,0);
-                rig.gravityScale = 0;
-                //Debug.Log(fixedY);
-                curDropTime = 0;
-
 
             }
         }
@@ -204,13 +206,15 @@ public class Flight : MonoBehaviour {
         {
             rig.gravityScale = 1f;
             
-            if (Input.GetAxisRaw("Jump") > 0 && curVertDelay >= vertDelay)
+            if (Input.GetAxisRaw("Jump") > 0.85f && curVertDelay >= vertDelay && canFly)
             {
-                rig.isKinematic = false;
+
+               // rig.isKinematic = false;
                 curVertDelay = 0f;
 
                 float impulse = rig.velocity.y <= 0 ? (vertImpulse + (Mathf.Abs(rig.velocity.y) * 0.8f)) : vertImpulse;
                 rig.AddForce(Vector2.up * impulse, ForceMode2D.Impulse);
+                curStick = LastStick.None;
             }
 
 
@@ -222,56 +226,34 @@ public class Flight : MonoBehaviour {
         }
 
 
-        
+        if (Mathf.Abs(Input.GetAxis("MoveX")) < 0.05)
+        {
+            rig.AddForce(-rig.velocity.x * Vector2.right * 20);
+        }
+
+
+
+            if (curStick != lastStick)
+        {
+            curStickTime = 0f;
+        }
+
+        lastStick = curStick;
 
             
 	}
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        /*if (curCheckTime >= checkTime)
-        {
-            curCheckTime = 0;
-            /*
-            if (fixedX != -999f)
-            {
-                CheckWall(col);
-                CheckCeiling(col);
-            }
-            else if (fixedY != -999f)
-            {
-                CheckCeiling(col);
-                CheckWall(col);
-            }
-            else
-            {
-                CheckCeiling(col);
-                CheckWall(col);
-            }
-        }*/
-
-        /* if (Mathf.Abs(Input.GetAxisRaw("MoveX")) > Mathf.Abs(Input.GetAxisRaw("MoveY")))
-         {
-             CheckWall(col);
-         }
-         else
-         {
-             CheckCeiling(col);
-         }
-     }
-    */
         CheckWall(col);
         CheckCeiling(col);
-        if (Mathf.Abs(Input.GetAxis("MoveY")) > 0 && fixedY != -999f)
+        if (Mathf.Abs(Input.GetAxis("MoveY")) > 0 && fixedX != -999f)
         {
-
             CheckCeiling(col);
         }
-        else if (Mathf.Abs (Input.GetAxis("MoveX")) > 0 && fixedX != -999f)
+        else if (Mathf.Abs (Input.GetAxis("MoveX")) > 0 && fixedY != -999f)
         {
             CheckWall(col);
-        
-            
         }
 
     }
@@ -286,12 +268,15 @@ public class Flight : MonoBehaviour {
             isRightWall = (transform.position.x - col.transform.position.x) > 0 ? true : false;
             isDropping = false;
             curDropTime = 0f;
-            //Debug.Log(fixedX);
+
+            curStick = LastStick.Wall;
+            
         }
     }
 
     void CheckCeiling(Collision2D col)
     {
+       
         if (col.gameObject.GetComponent<Ceiling>() != null)
         {
             fixedY = transform.position.y;
@@ -300,14 +285,15 @@ public class Flight : MonoBehaviour {
             isFloor = (transform.position.y - col.transform.position.y) > 0 ? true : false;
             isDropping = false;
             curDropTime = 0f;
-            //Debug.Log(fixedX);
+
+            curStick = LastStick.Ceiling;
+           
         }
     }
 
 
     void OnCollisionExit2D(Collision2D col)
     {
-        // if ((col.gameObject.GetComponent<Wall>() != null && fixedY != -999f) || (col.gameObject.GetComponent<Ceiling>() != null && fixedX != -999f))
         curDropTime = 0f;
         isDropping = true;
     }
