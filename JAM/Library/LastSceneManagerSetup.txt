@@ -1,4 +1,8 @@
 sceneSetups:
-- path: Assets/Josh/Main 2.unity
+<<<<<<< HEAD
+- path: Assets/Main/Prototype.unity
+=======
+- path: Assets/Sam/FlightTest.unity
+>>>>>>> origin/FuckupBranch
   isLoaded: 1
   isActive: 1
