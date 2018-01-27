@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
+
 public class PuzzleBoxCollider : MonoBehaviour {
     PuzzleBox p;
     public direction dir;
@@ -40,4 +40,4 @@ public class PuzzleBoxCollider : MonoBehaviour {
     }
 
     public enum direction { Up, Down, Left, Right}
-}*/
+}
