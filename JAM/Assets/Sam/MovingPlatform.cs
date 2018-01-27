@@ -22,7 +22,7 @@ public class MovingPlatform : MonoBehaviour {
         {
             case (MoveType.abcabc):
                 transform.position = Vector2.MoveTowards(transform.position, waypoints[curPoint].position, Time.fixedDeltaTime * 1f);
-                if (Vector2.Distance(transform.position , waypoints[curPoint].position) < 0.5f)
+                if (Vector2.Distance(transform.position , waypoints[curPoint].position) < 0.1f)
                 {
                     curPoint++;
                     if (curPoint > totPoints)

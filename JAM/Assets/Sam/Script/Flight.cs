@@ -18,7 +18,7 @@ public class Flight : MonoBehaviour {
     bool isRightWall = true;
 
     public GameController gameController;
-
+    public Animator anim;
 
     float fixedY = -999f;
     bool isFloor = true;
@@ -44,6 +44,7 @@ public class Flight : MonoBehaviour {
     void Awake() {
         rig = GetComponent<Rigidbody2D>();
         gameController = FindObjectOfType<GameController>();
+        
         
 	}
 
@@ -104,10 +105,12 @@ public class Flight : MonoBehaviour {
                 if (isRightWall)
                 {
                     rig.AddForce(Vector2.right * horizontalSpeed * 100f);
+                    anim.SetTrigger("Fly");
                 }
                 else
                 {
                     rig.AddForce(Vector2.left * horizontalSpeed * 100f);
+                    anim.SetTrigger("Fly");
                 }
             }
 
@@ -117,9 +120,11 @@ public class Flight : MonoBehaviour {
                 if (isFloor)
                 {
                     rig.AddForce(Vector2.down * horizontalSpeed * 500f);
+                    anim.SetTrigger("Fly");
                 } else
                 {
                     rig.AddForce(Vector2.up * horizontalSpeed * 15f);
+                    anim.SetTrigger("Fly");
                 }
                 fixedY = -999f;                
               
@@ -132,6 +137,7 @@ public class Flight : MonoBehaviour {
         if (Mathf.Abs(Input.GetAxis("Jump")) > 0.85f && (down.distance < 0.01f) && canFly){
             if (fixedY != -999f)
             {
+                anim.SetTrigger("Fly");
                 curStick = LastStick.None;
                     rig.AddForce(Vector2.up * horizontalSpeed * 15f, ForceMode2D.Impulse);
                     fixedY = -999f;
@@ -149,6 +155,7 @@ public class Flight : MonoBehaviour {
             {
                 if (Mathf.Abs(Input.GetAxis("MoveY")) > 0)
                 {
+                    anim.SetTrigger("Walk");
                     rig.AddForce(Vector2.up * ((Input.GetAxis("MoveY") * 1 * -horizontalSpeed) - (rig.velocity.y * 0.2f)), ForceMode2D.Impulse);
 
                 }
@@ -175,7 +182,7 @@ public class Flight : MonoBehaviour {
                 }
                 else if (Input.GetAxisRaw("Jump") > 0.05f && canFly)// && curVertDelay >= vertDelay)
                 {
-
+                    anim.SetTrigger("Fly");
                     fixedX = -999f;
                     fixedY = -999f;
                     isDropping = false;
@@ -200,6 +207,7 @@ public class Flight : MonoBehaviour {
 
                 if (Mathf.Abs(Input.GetAxis("MoveX")) > 0)
                 {
+                    anim.SetTrigger("Walk");
                     rig.AddForce(Vector2.right * ((Input.GetAxis("MoveX") * 1 * horizontalSpeed) - (rig.velocity.x * 0.2f)), ForceMode2D.Impulse);
 
                 }
@@ -212,8 +220,8 @@ public class Flight : MonoBehaviour {
             
             if (Input.GetAxisRaw("Jump") > 0.85f && curVertDelay >= vertDelay && canFly)
             {
-
-               // rig.isKinematic = false;
+                anim.SetTrigger("Fly");
+                // rig.isKinematic = false;
                 curVertDelay = 0f;
 
                 float impulse = rig.velocity.y <= 0 ? (vertImpulse + (Mathf.Abs(rig.velocity.y) * 0.8f)) : vertImpulse;
@@ -225,6 +233,7 @@ public class Flight : MonoBehaviour {
 
             if (Mathf.Abs(Input.GetAxis("MoveX")) > 0)
             {
+                anim.SetTrigger("Walk");
                 rig.AddForce(Vector2.right * ((Input.GetAxis("MoveX") * horizontalSpeed) - (rig.velocity.x * 0.2f)), ForceMode2D.Impulse);
             }
         }
@@ -232,6 +241,7 @@ public class Flight : MonoBehaviour {
 
         if (Mathf.Abs(Input.GetAxis("MoveX")) < 0.05)
         {
+            anim.SetTrigger("Walk");
             rig.AddForce(-rig.velocity.x * Vector2.right * 20);
         }
 
@@ -249,6 +259,7 @@ public class Flight : MonoBehaviour {
             if (Input.GetAxis("MoveX") < 0)
 
             {
+                anim.SetTrigger("Walk");
                 GetComponent<SpriteRenderer>().flipX = true;
             } else
             {
@@ -261,6 +272,7 @@ public class Flight : MonoBehaviour {
             if (Input.GetAxis("MoveX") < 0)
 
             {
+                anim.SetTrigger("Walk");
                 GetComponent<SpriteRenderer>().flipX = false;
             }
             else
@@ -321,7 +333,8 @@ public class Flight : MonoBehaviour {
             curDropTime = 0f;
 
             curStick = LastStick.Wall;
-            
+            anim.SetTrigger("Walk");
+
         }
     }
 
@@ -338,7 +351,8 @@ public class Flight : MonoBehaviour {
             curDropTime = 0f;
 
             curStick = LastStick.Ceiling;
-           
+            anim.SetTrigger("Walk");
+
         }
     }
 
